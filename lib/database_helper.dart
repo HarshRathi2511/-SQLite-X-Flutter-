@@ -44,7 +44,7 @@ class DataBaseHelper {
    //Function(Database, int)?
   Future _onCreate (Database db, int version) async {
     //create a new table 
-    db.query(
+    await db.execute(
       '''
        CREATE TABLE $_tableName(
          $columnId INTEGER PRIMARY KEY,
@@ -60,7 +60,7 @@ class DataBaseHelper {
   //query will be a list of maps returned from the table 
 
   //insert function  
-  Future<int> _insert( Map<String,dynamic> row) async {
+  Future<int> insert( Map<String,dynamic> row) async {
     Database db = await instance.database; //get the database from the present instance 
     
     return await db.insert(_tableName, row); //row will be {'id':..., 'name' : 'Harsh'}
@@ -77,17 +77,17 @@ class DataBaseHelper {
     Database db = await instance.database;
     int id = row[columnId];
     return await db.update(_tableName, row ,where: '$columnId = ?' ,whereArgs: [id]);
-//Convenience method for updating rows in the database. Returns the number of changes made
-// Update [table] with [values], a map from column names to new column values.
-// null is a valid value that will be translated to NULL.
+  //Convenience method for updating rows in the database. Returns the number of changes made
+  // Update [table] with [values], a map from column names to new column values.
+  // null is a valid value that will be translated to NULL.
 
-//eg
-//int count = await db.update(tableTodo, todo.toMap(),
+  //eg
+  //int count = await db.update(tableTodo, todo.toMap(),
   //  where: '$columnId = ? $columnName = ?', whereArgs: [todo.id]);
   //you can pass multiple arguments 
   }
 
-
+  //{'_id': 1, 'name': 'Harsh'}
   Future<int> delete(int id) async {
     Database db = await instance.database;
     return await db.delete(_tableName,where: '$columnId =?',whereArgs: [id]);
